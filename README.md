@@ -7,3 +7,8 @@ The dashboard enables users to visualize and compare experimental results under 
 While efforts have been made to standardize and pre-filter the available data to ensure consistency and usability, users are strongly encouraged to consult the original publications to verify experimental details, particularly regarding sample preparation, loading procedures, and measurement conditions. In particular, attention should be paid to the definitions of stress and strain rate, especially when comparing different experimental configurations, as equivalence between reported quantities (e.g., octahedral vs. uniaxial measures) is not always guaranteed.
 
 Users and researchers are also encouraged to contribute to and enrich this database by uploading new datasets. This can be done by downloading the provided template via the "Add your experimental results" button and submitting the completed CSV file to Maurine (maurine.montagnat@univ-grenoble-alpes.fr), Olivier (olivier.castelnau@ensam.eu) or Mohammed (idrissielfallaki@gmail.com).
+
+# Temporary external access to the application (For Maurine)
+
+https://icemechadata-dashboard-xfese6nntnuhad84uazeuw.streamlit.app/
+
