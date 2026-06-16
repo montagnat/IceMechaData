@@ -76,7 +76,7 @@ pip install streamlit
 Run the Streamlit application:
 
 ```bash
-streamlit run dashboard.py
+streamlit run Dashboard.py
 ```
 
 Once the server starts, Streamlit will display a local URL similar to:
