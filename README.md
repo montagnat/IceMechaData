@@ -12,7 +12,7 @@ We welcome contributions to expand and enrich the IceMechaData database.
 
 To contribute:
 
-1. Click **"Add your experimental results"** in the dashboard, or use the CSV template available in the GitLab repository under **"data_template.csv"**
+1. Click **"Add your experimental results"** in the dashboard, or use the CSV template available in this repository under **"data_template.csv"**
 2. Download the provided CSV template
 3. Fill it with your experimental data
 4. Send the completed file to:
