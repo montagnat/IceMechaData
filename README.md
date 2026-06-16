@@ -1,4 +1,4 @@
-# Welcome to IceMechaData Dashboard ❄️
+# 🧊 Welcome to IceMechaData Dashboard 
 
 ## Overview
 This interactive platform is designed for the exploration and analysis of experimental data on the mechanical behavior and creep of ice. The database compiles results from studies spanning from the early 20th century to the present day, bringing together a wide range of experimental conditions, including specimen geometry, temperature, applied stress or strain rate, loading history, and key microstructural characteristics.
