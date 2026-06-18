@@ -65,7 +65,7 @@ st.markdown("""
 
 # -------------------- Constants --------------------
 # Load database
-CSV_FILE = "data/creep_data.csv"
+CSV_FILE = "data/ice_experimental_data.csv"
 
 # LOAD_ICONS = {
 #     "Compression": "icons/compression.png",
