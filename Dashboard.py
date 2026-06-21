@@ -1,13 +1,9 @@
 
 import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from io import BytesIO
 from pathlib import Path
 import altair as alt
-from PIL import Image
-from pathlib import Path
+
 
 
 # the size of the list marker should be more than the different loading
