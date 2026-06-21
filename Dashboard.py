@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 import altair as alt
-
+from PIL import Image
 
 
 # the size of the list marker should be more than the different loading
