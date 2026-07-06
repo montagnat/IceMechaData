@@ -1,9 +1,9 @@
-
 import streamlit as st
 import pandas as pd
 from pathlib import Path
 import altair as alt
 from PIL import Image
+
 
 
 # the size of the list marker should be more than the different loading
@@ -21,7 +21,7 @@ list_marker=["circle","square","triangle-up","diamond","cross",
     
 # -------------------- Page Configuration --------------------
 st.set_page_config(
-    page_title="IceMechaData",
+    page_title="IceMechaData Dashboard",
     page_icon="🧊",
 )
 
@@ -92,7 +92,7 @@ def load_csv(file_path=CSV_FILE):
     df.columns = df.columns.str.strip()
 
     # Coerce numeric
-    for col in ["Stress (MPa)", "Minimum strain rate (s-1)", "Temperature (°C)", "Number of Grains", "Grain size"]:
+    for col in ["Stress (MPa)", "Strain rate (s-1)", "Temperature (°C)", "Number of Grains", "Grain size"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
     return df
@@ -111,7 +111,7 @@ The dashboard enables users to **visualize** and **compare** experimental result
 
 While efforts have been made to standardize and pre-filter the available data to ensure consistency and usability, users are strongly encouraged to **consult the original publications** to verify experimental details, particularly regarding sample preparation, loading procedures, and measurement conditions. In particular, attention should be paid to the definitions of stress and strain rate, especially when comparing different experimental configurations, as equivalence between reported quantities (e.g., octahedral vs. uniaxial measures) is not always guaranteed.
 
-Users and researchers are also encouraged to contribute to and **enrich** this database by uploading new datasets. This can be done by downloading the provided template via the **"Add your experimental data"** button and submitting the completed CSV file to Maurine or Olivier.""")
+Users and researchers are also encouraged to contribute to and **enrich** this database by uploading new datasets. This can be done by downloading the provided template via the **"Add your experimental data"** button and submitting the completed CSV file to M. Montagnat (maurine.montagnat@univ-grenoble-alpes.fr) or O. Castelnau (olivier.castelnau@ensam.eu).""")
 
 st.markdown("---")
 
@@ -149,7 +149,7 @@ filtered_df = creep_df[
     & (creep_df["Loading"].isin(selected_loads))
     & (creep_df["Temperature (°C)"].between(temp_min, temp_max))
     & (creep_df["Stress (MPa)"].between(stress_min, stress_max))
-    & (creep_df["Minimum strain rate (s-1)"].between(strain_rate_min, strain_rate_max))
+    & (creep_df["Strain rate (s-1)"].between(strain_rate_min, strain_rate_max))
 ].copy()
 
 # ============================================================
@@ -227,15 +227,15 @@ else:
     plot_config = {
         "Strain rate vs. Stress": (
             "Stress (MPa)",
-            "Minimum strain rate (s-1)",
+            "Strain rate (s-1)",
         ),
         "Stress vs. Strain rate": (
-            "Minimum strain rate (s-1)",
+            "Strain rate (s-1)",
             "Stress (MPa)",
         ),
         "Strain rate vs. Temperature": (
             "Temperature (°C)",
-            "Minimum strain rate (s-1)",
+            "Strain rate (s-1)",
         ),
         "Stress vs. Temperature": (
             "Temperature (°C)",
@@ -264,7 +264,7 @@ else:
     elif plot_type == "Stress vs. Temperature":
 
         filtered_df["Curve Label"] = (
-            filtered_df["Minimum strain rate (s-1)"].astype(str)
+            filtered_df["Strain rate (s-1)"].astype(str)
             + " s⁻¹; "
             + filtered_df["Reference"].astype(str)
             + "; "
@@ -316,16 +316,20 @@ else:
             "Test",
             "Loading",
             "Regime",
+            "Covered creep regimes",
             "Temperature (°C)",
             x_col,
             y_col,
             "Stress (MPa)",
-            "Microstructure",
-            "Composition",
             "Specimen type",
             "Origin",
             "Texture",
-            "Density [kg/m3]",
+            "Texture availability",
+            "Composition",
+            "Density (kg/m3)",
+            "Microstructure",            
+            "Grain size",
+            "Number of Grains",
             "Reference",
             "Remarks",
         ]
@@ -399,44 +403,20 @@ else:
     st.download_button(label="📄 Download Data as csv file", data=csv, file_name=f"{file_name}.csv", mime="text/csv")
 
 
+    st.markdown("---")
+
+
     # References
-    st.markdown("#### 📚 Others informations and References of your selected experimental data")
+    st.markdown("#### 📚 References for your selected experimental data")
     # protect against missing fields in filtered_df
-    if not filtered_df.empty and {"Reference", "Loading"}.issubset(filtered_df.columns):
+    if not filtered_df.empty and {"Reference", "Test", "Loading"}.issubset(filtered_df.columns):
         clean = lambda x: "" if pd.isna(x) else x
-        def bold(x):
-            return f"**{x}**" if x not in [None, "", "nan"] and not pd.isna(x) else ""
-
         for _, row in filtered_df.drop_duplicates("Reference").iterrows():
-            # safe accesses with .get and fallback
-            texture           =  clean(row.get("Texture", ""))
-            composition       =  clean(row.get("Composition", ""))
-            density           =  row.get("Density (kg/m3)", "") if isinstance(row, dict) else row.get("Density (kg/m3)", "")
-            microstructure    =  clean(row.get("Microstructure", "")) 
-            regime            =  clean(row.get("Regime", ""))
-            ice_specimen_type =  clean(row.get("Specimen type", "")) 
-            ice_origin        =  clean(row.get("Origin", "")) 
-            texture_availability = clean(row.get("Texture availability", ""))
-            if texture_availability == "":
-                texture_availability = "Texture is not available"
-            else:
-                texture_availability = f"Texture is available as **{texture_availability}**"
-
-            spec              = row.get("Specimen dimension (mm)", "") if isinstance(row, dict) else row.get("Specimen dimension (mm)", "")
-            grain_num         = row.get("Number of Grains", "") if isinstance(row, dict) else row.get("Number of Grains", "")
-            grain_size        = row.get("Grain size", "") if isinstance(row, dict) else row.get("Grain size", "")
             url               = clean(row.get("URL", "")) 
             st.markdown(
-                f"- **{row['Loading']}** test for {bold(texture)} {bold(composition)} {bold(ice_specimen_type)} {bold(ice_origin)} ice ,<br>"
-                f"**{microstructure}** microstructure,<br>"
-                f"Density (kg/m3): **{density}**,<br>"
-                f"{texture_availability},<br>" 
-                f"Data available: {bold(regime)},<br>"
-                f"Specimen dimension [mm]: **{spec}**; Number of Grains: **{grain_num}**; Grain size: **{grain_size}**,<br>"
-                f"Reference : [{row['Reference']}]({url})",
+                f"- [{row['Reference']}]({url})",
                 unsafe_allow_html=True
             )
-
 
 
 st.markdown("---")
@@ -515,15 +495,15 @@ creators = [
         "profile": "https://scholar.google.com/citations?user=YxudVy0AAAAJ&hl=fr"
     },
     {
-        "name": "Mikhael Tannous",
-        "photo": "logos/Mikhael_Tannous.jpg",
-        "profile": "https://scholar.google.com/citations?user=VSgWgTYAAAAJ&hl=fr"
-    },    
-    {
         "name": "Olivier Gagliardini",
         "photo": "logos/Olivier_Gagliardini.png",
         "profile": "https://scholar.google.com/citations?user=hkGnXdkAAAAJ&hl=fr&oi=ao"
     },
+    {
+        "name": "Mikhael Tannous",
+        "photo": "logos/Mikhael_Tannous.jpg",
+        "profile": "https://scholar.google.com/citations?user=VSgWgTYAAAAJ&hl=fr"
+    },    
     {
         "name": "Chady Ghnatios",
         "photo": "logos/chady_ghnatios.jpeg",
@@ -565,4 +545,5 @@ for i, creator in enumerate(creators):
 
         except Exception as e:
             st.error(f"Could not load photo: {creator['photo']}\n{e}")
+
 
