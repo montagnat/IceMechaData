@@ -92,7 +92,7 @@ def load_csv(file_path=CSV_FILE):
     df.columns = df.columns.str.strip()
 
     # Coerce numeric
-    for col in ["Stress (MPa)", "Strain rate (s-1)", "Temperature (°C)", "Number of Grains", "Grain size"]:
+    for col in ["Stress (MPa)", "Strain rate (s-1)", "Temperature (°C)", "Number of Grains", "Grains size"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
     return df
