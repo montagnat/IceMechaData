@@ -328,7 +328,7 @@ else:
             "Composition",
             "Density (kg/m3)",
             "Microstructure",            
-            "Grain size",
+            "Grains size",
             "Number of Grains",
             "Reference",
             "Remarks",
