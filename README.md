@@ -27,7 +27,7 @@ To contribute:
 # External access to the application
 The current deployment of the dashboard is available at:
 
-https://icemechadata-yu4djjn5qqmg547r2txvrw.streamlit.app
+https://icemechadata.streamlit.app
 
 
 
